@@ -1,7 +1,7 @@
 require 'yaml'
 require "./lib/boot"
 
-class App
+class Server
   attr_reader :router
   
   def initialize
