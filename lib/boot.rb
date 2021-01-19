@@ -2,6 +2,11 @@
 db_config_file = File.join(File.dirname(__FILE__), '..', 'app', 'database.yml')
 if File.exist?(db_config_file)
   config = YAML.load(File.read(db_config_file))
+  
+  if config["adapter"]
+    config["database"] = File.join(File.dirname(__FILE__), '..', 'database', config["database"])
+  end
+
   DB = Sequel.connect(config)
   Sequel.extension :migration
 end
@@ -21,15 +26,9 @@ Dir[File.join(File.dirname(__FILE__), '..', 'app', 'controllers', '*.rb')].each 
   require file 
 end
 
-# loading migrations
-Dir[File.join(File.dirname(__FILE__), '..', 'app', 'migrations', '*.rb')].each do |file|
-  require file
-end
-
 # If there is a database connection, running all the migrations
 if DB
-  files = File.join(File.dirname(__FILE__), '..', 'app', 'db', 'migrations')
-  Sequel::Migrator.run(DB, files)
+  Sequel::Migrator.run(DB, File.join(File.dirname(__FILE__), '..', 'database', 'migrations'))
 end
 
 
