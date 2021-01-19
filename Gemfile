@@ -6,3 +6,4 @@ ruby '3.0.0'
 
 gem 'rack', '~>2.2.3'
 gem 'puma', '~>5.1.1'
+gem 'slim', '~>4.1.0'
