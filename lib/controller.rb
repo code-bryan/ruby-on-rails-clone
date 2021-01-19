@@ -18,7 +18,7 @@ class Controller
   def not_found # 4
     self.status = 404
     self.headers = {}
-    self.content = ["Not found found"]
+    self.content = ["Not found"]
     self
   end
 
