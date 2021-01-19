@@ -1,5 +1,5 @@
 # Creating database context
-db_config_file = File.join(File.dirname(__FILE__), '..', 'app', 'database.yml')
+db_config_file = File.join(File.dirname(__FILE__), '..', 'config', 'database.yml')
 if File.exist?(db_config_file)
   config = YAML.load(File.read(db_config_file))
   
@@ -33,4 +33,4 @@ end
 
 
 # Reading routings
-ROUTES = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', 'app', 'routes.yml')))
+ROUTES = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', 'config', 'routes.yml')))
