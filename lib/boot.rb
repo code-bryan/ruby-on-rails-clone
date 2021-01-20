@@ -1,5 +1,6 @@
 require_relative 'loader'
 require_relative './database'
+require "dotenv"
 
 # Creating database context
 database = Database.new
@@ -7,6 +8,7 @@ DB = database.call
 
 # Loading data
 Loader.init
+Dotenv.load
 
 # Loading migrations
 database.migrations

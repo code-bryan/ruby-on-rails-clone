@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    dotenv (2.7.6)
     nio4r (2.5.4)
     puma (5.1.1)
       nio4r (~> 2.0)
@@ -17,6 +18,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  dotenv (~> 2.7.6)
   puma (~> 5.1.1)
   rack (~> 2.2.3)
   sequel (~> 5.40.0)
