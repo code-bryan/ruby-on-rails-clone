@@ -1,4 +1,4 @@
-class PostsController < Controller
+class PostsController < Controllers::Controller
   def index
     @posts = Post.all
     render("test")

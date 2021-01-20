@@ -5,7 +5,7 @@ class App
   attr_reader :router
   
   def initialize
-    @router = Router.new(ROUTES)
+    @router = Routing::Router.new(ROUTES)
   end
 
   def call(env)

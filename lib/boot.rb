@@ -9,7 +9,7 @@ Loader.init
 database.migrations
 
 module Framework
-  @routes = Routes.new
+  @routes = Routing::Routes.new
 
   def self.routes
     @routes
