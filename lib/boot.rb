@@ -1,5 +1,5 @@
-require_relative 'database'
 require_relative 'loader'
+require_relative './database'
 
 # Creating database context
 database = Database.new
@@ -11,6 +11,11 @@ Loader.init
 # Loading migrations
 database.migrations
 
+Loader.init_models
+
+# Loading seeder
+database.seeder
+
 # loading framework
 module Framework
   include Routing
@@ -21,6 +26,7 @@ module Framework
     @routes
   end
 end
+
 
 # loading routes
 Loader.init_routes

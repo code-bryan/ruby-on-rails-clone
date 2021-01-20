@@ -2,10 +2,12 @@ require 'yaml'
 require "./lib/boot"
 
 class App
+  include Routing
+  
   attr_reader :router
 
   def initialize
-    @router = Routing::Router.new(ROUTES)
+    @router = Router.new(ROUTES)
   end
 
   def call(env)
