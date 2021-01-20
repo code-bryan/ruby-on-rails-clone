@@ -3,7 +3,7 @@ require "./lib/boot"
 
 class App
   attr_reader :router
-  
+
   def initialize
     @router = Routing::Router.new(ROUTES)
   end

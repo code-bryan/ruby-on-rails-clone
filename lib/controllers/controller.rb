@@ -2,7 +2,9 @@ module Controllers
   class Controller
     attr_reader :name, :action
     attr_accessor :status, :headers, :content
-  
+    
+    # @param name string
+    # @param actuon symbol
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
