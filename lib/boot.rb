@@ -2,8 +2,11 @@ require_relative 'database'
 require_relative 'loader'
 
 # Creating database context
-DB = Database.new.call
+database = Database.new
+DB = database.call
+
 Loader.init
+database.migrations
 
 module Framework
   @routes = Routes.new

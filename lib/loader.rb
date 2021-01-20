@@ -1,7 +1,7 @@
 module Loader
     def self.init
         # Connecting all our framework's classes
-        Dir[File.join(File.dirname(__FILE__), '..', 'lib', '*.rb')].each do |file|
+        Dir[File.join(File.dirname(__FILE__), '..', 'lib', '**', '*.rb')].each do |file|
             require file if !file.include? "boot.rb"
         end
         

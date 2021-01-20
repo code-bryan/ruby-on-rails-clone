@@ -1,17 +1,5 @@
-class Render
-  attr_reader :template_instance
-
-  def initialize
-    @template_instance = Slim::Template
-  end
-
-  def call(name = "#{self.name}/#{self.action}")
-    @template_instance.new(File.join(App.root, 'app', 'views', "#{name}.slim"))
-  end
-end
-
 class Controller
-  attr_reader :name, :action, :data
+  attr_reader :name, :action
   attr_accessor :status, :headers, :content
 
   def initialize(name: nil, action: nil)

@@ -1,3 +1,0 @@
-"/" : "main#index"
-"/hello": "main#hello"
-"/posts": "posts#index"
