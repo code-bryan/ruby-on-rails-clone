@@ -8,7 +8,6 @@ module Controllers
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
-  
       @template = Render.new
     end
   
@@ -41,8 +40,17 @@ module Controllers
     end
   
     # @param name string
+    # @return Render.template_instance 
     def render(name = "#{self.name}/#{self.action}")
       @template.call(name)
+    end
+
+    protected
+
+    # @param key string
+    # @return string
+    def environment(key)
+      ENV[key]
     end
   
     private
