@@ -1,3 +1,4 @@
+
 # Creating database context
 db_config_file = File.join(File.dirname(__FILE__), '..', 'config', 'database.yml')
 if File.exist?(db_config_file)
@@ -31,6 +32,17 @@ if DB
   Sequel::Migrator.run(DB, File.join(File.dirname(__FILE__), '..', 'database', 'migrations'))
 end
 
+module Fromework
+  @routes = Routes.new
+
+  def self.routes
+    @routes
+  end
+end
+
+Dir[File.join(File.dirname(__FILE__), '..', 'routes', '*.rb')].each do |file|
+  require file
+end
 
 # Reading routings
-ROUTES = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', 'config', 'routes.yml')))
+ROUTES = Fromework.routes.list

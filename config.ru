@@ -3,6 +3,6 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
-require "./server"
+require "./app"
 
-run Server.new
+run App.new
