@@ -5,7 +5,7 @@ class Render
     @template_instance = Slim::Template
   end
 
-  def call(name = "#{self.name}/#{self.action}")``
+  def call(name = "#{self.name}/#{self.action}")
     @template_instance.new(File.join(App.root, 'app', 'views', "#{name}.slim"))
   end
 end
@@ -29,7 +29,7 @@ class Controller
       content = action_send
     end
 
-    self.status = 200 # 3
+    self.status = 200
     self.headers = {"Content-Type" => "text/html"}
     self.content = [content.render(self)]
     self
