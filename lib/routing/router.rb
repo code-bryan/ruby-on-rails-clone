@@ -3,7 +3,7 @@ module Routing
     include Controllers
     attr_reader :routes
     
-    # @param routes Hash
+    # @param routes String
     def initialize(routes)
       @routes = routes
     end

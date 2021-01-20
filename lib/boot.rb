@@ -10,6 +10,8 @@ DB = database.call
 Loader.init
 Dotenv.load
 
+ENV['RACK_ENV'] = ENV['APP_ENV']
+
 # Loading migrations
 database.migrations
 
