@@ -1,4 +1,4 @@
-class CreateTablePosts < Sequel::Migration
+class CreateTablePosts < Database::Migration
   def up
     create_table :posts do
         primary_key :id

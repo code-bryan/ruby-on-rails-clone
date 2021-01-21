@@ -1,10 +1,19 @@
 class Loader
+  attr_reader :instance
+
   def init
     load_require
     load_environment
   end
 
+  def self.instance
+    return @instance if @instance
+    @instance = Loader.new
+  end
+
   def init_models
+    require File.join(File.dirname(__FILE__), '..', 'lib', 'database', 'model.rb')
+
     # loading models
     Dir[File.join(File.dirname(__FILE__), '..', 'app', 'models', '**', '*.rb')].each do |file|
         require file
@@ -23,7 +32,9 @@ class Loader
   def load_require
     # Connecting all our framework's classes
     Dir[File.join(File.dirname(__FILE__), '..', 'lib', '**', '*.rb')].each do |file|
-      require file if !file.include? "boot.rb"
+      if ["boot.rb", "model.rb"].detect { |word| file.include? word }.nil?
+        require file 
+      end
     end
     
     # loading controllers

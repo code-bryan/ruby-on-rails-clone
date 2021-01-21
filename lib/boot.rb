@@ -1,20 +1,19 @@
 require_relative 'loader'
-require_relative './database'
 require "dotenv"
+require_relative './foundations/database'
 
 # Creating database context
-database = Database.new
+database = Foundations::Database.new
 DB = database.call
 
 # Loading data
 Dotenv.load
-loader = Loader.new
-loader.init
+Loader.instance.init
 
 # Loading migrations
 database.migrations
 
-loader.init_models
+Loader.instance.init_models
 
 # Loading seeder
 database.seeder
@@ -32,7 +31,7 @@ end
 
 
 # loading routes
-loader.init_routes
+Loader.instance.init_routes
 
 # Reading routings
 ROUTES = Framework.route.list
