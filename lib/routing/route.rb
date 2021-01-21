@@ -1,5 +1,5 @@
 module Routing
-  class Routes
+  class Route
     attr_reader :list # a array list
     
     def initialize

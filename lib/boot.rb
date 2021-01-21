@@ -7,15 +7,14 @@ database = Database.new
 DB = database.call
 
 # Loading data
-Loader.init
 Dotenv.load
-
-ENV['RACK_ENV'] = ENV['APP_ENV']
+loader = Loader.new
+loader.init
 
 # Loading migrations
 database.migrations
 
-Loader.init_models
+loader.init_models
 
 # Loading seeder
 database.seeder
@@ -24,16 +23,16 @@ database.seeder
 module Framework
   include Routing
 
-  @routes = Routes.new
+  @route = Route.new
 
-  def self.routes
-    @routes
+  def self.route
+    @route
   end
 end
 
 
 # loading routes
-Loader.init_routes
+loader.init_routes
 
 # Reading routings
-ROUTES = Framework.routes.list
+ROUTES = Framework.route.list

@@ -1,4 +1,4 @@
-module Controllers
+module Routing
     class Render
         attr_reader :template_instance
     
