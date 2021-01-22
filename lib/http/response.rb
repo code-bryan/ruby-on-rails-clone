@@ -11,14 +11,15 @@ module Http
       ERB.new(view)
     end
 
+    # @param layout string
     # @return LayoutRenderer
-    def layout
-      layout = File.read(File.join(App.root, 'app', 'views', 'layout', "application.html.erb"))
-      render = ERB.new(layout)
-      render.def_method(LayoutRenderer, 'render')
+    def layout(layout = "layout/application")
+      layout = File.read(File.join(App.root, 'app', 'views', "#{layout}.html.erb"))
+      render = ERB.new(layout).def_method(LayoutRenderer, 'render')
       LayoutRenderer.new
     end
 
+    # @return ERB
     def self.template_engine
       ERB
     end
