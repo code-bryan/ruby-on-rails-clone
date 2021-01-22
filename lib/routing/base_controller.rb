@@ -15,10 +15,9 @@ module Routing
     
     # @return Routing::BaseController
     def call
-      action_send = send(action)
-      content = view
-      content = action_send if action_send.instance_of? Response.template_engine
-      resolve(StatusCode::OK, content.result(binding))
+      content = send(action)
+      content = view if !content.instance_of? Response.template_engine
+      resolve(StatusCode::OK, content)
     end
     
     # @return Routing::BaseController
@@ -36,7 +35,9 @@ module Routing
     # @param name string
     # @return Erb
     def view(name = "#{self.name}/#{self.action}")
-      @response.view(name)
+      @response.layout.render do
+        @response.view(name).result(binding)
+      end
     end
 
     # @param key string
@@ -48,14 +49,11 @@ module Routing
     private
     attr_reader :response
 
-    # constanrts
-    DEFAULT_CONTENT_TYPE = {"Content-Type" => "text/html"}
-
     # @param status Routing::StatusCode
     # @param content string|render
     # @param headers hash
     # @return Routing::BaseController
-    def resolve(status = 200, content = "", headers = DEFAULT_CONTENT_TYPE)
+    def resolve(status = 200, content = "", headers = {"Content-Type" => "text/html"})
       self.status = status
       self.headers = headers
       self.content = [content]
