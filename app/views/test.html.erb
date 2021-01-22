@@ -1,0 +1,9 @@
+<h1>Test</h1>
+<h1><%= @data %></h1>
+
+<% @posts.each do |post| %>
+  <h2><%= post.title %></h2>
+  <div><%= post.content %></div>
+
+  <hr />
+<% end %>

@@ -1,28 +1,26 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    cgi (0.2.0)
     dotenv (2.7.6)
+    erb (2.2.2)
+      cgi
     nio4r (2.5.4)
     puma (5.1.1)
       nio4r (~> 2.0)
     rack (2.2.3)
     sequel (5.40.0)
-    slim (4.1.0)
-      temple (>= 0.7.6, < 0.9)
-      tilt (>= 2.0.6, < 2.1)
     sqlite3 (1.4.2)
-    temple (0.8.2)
-    tilt (2.0.10)
 
 PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
   dotenv (~> 2.7.6)
+  erb (~> 2.2)
   puma (~> 5.1.1)
   rack (~> 2.2.3)
   sequel (~> 5.40.0)
-  slim (~> 4.1.0)
   sqlite3 (~> 1.4.2)
 
 RUBY VERSION

@@ -10,15 +10,15 @@ module Routing
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
-      @@response = Response.new
+      @response = Response.new
     end
     
     # @return Routing::BaseController
     def call
       action_send = send(action)
       content = view
-      content = action_send if action_send.instance_of? @template.template_instance
-      resolve(StatusCode::OK, content.render(self))
+      content = action_send if action_send.instance_of? Response.template_engine
+      resolve(StatusCode::OK, content.result(binding))
     end
     
     # @return Routing::BaseController
@@ -30,14 +30,14 @@ module Routing
     def internal_error
       resolve(StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error", {})
     end
-  
+
+    protected
+
     # @param name string
-    # @return Http::Response
+    # @return Erb
     def view(name = "#{self.name}/#{self.action}")
       @response.view(name)
     end
-
-    protected
 
     # @param key string
     # @return string
@@ -46,7 +46,7 @@ module Routing
     end
   
     private
-    attr_reader :template
+    attr_reader :response
 
     # constanrts
     DEFAULT_CONTENT_TYPE = {"Content-Type" => "text/html"}
