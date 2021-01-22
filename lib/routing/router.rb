@@ -11,11 +11,10 @@ module Routing
     def resolve(env)
       path, method = [env['REQUEST_PATH'], env['REQUEST_METHOD']]
 
-      if route = route_finder(path, method)
-        controller_finder(route[:controller]).call
-      else
-        BaseController.new.not_found
-      end
+      route = route_finder(path, method)
+      return BaseController.new.not_found if route.nil?
+      
+      controller_finder(route[:controller]).call
     rescue Exception => error
       puts error.message
       puts error.backtrace
