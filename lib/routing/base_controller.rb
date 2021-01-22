@@ -1,5 +1,7 @@
 module Routing
   class BaseController
+    include Http
+
     attr_reader :name, :action
     attr_accessor :status, :headers, :content
     
@@ -8,13 +10,13 @@ module Routing
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
-      @template = Render.new
+      @@response = Response.new
     end
     
     # @return Routing::BaseController
     def call
       action_send = send(action)
-      content = render
+      content = view
       content = action_send if action_send.instance_of? @template.template_instance
       resolve(StatusCode::OK, content.render(self))
     end
@@ -30,9 +32,9 @@ module Routing
     end
   
     # @param name string
-    # @return Render.template_instance 
-    def render(name = "#{self.name}/#{self.action}")
-      @template.call(name)
+    # @return Http::Response
+    def view(name = "#{self.name}/#{self.action}")
+      @response.view(name)
     end
 
     protected
