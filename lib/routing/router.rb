@@ -8,6 +8,7 @@ module Routing
     end
     
     # @param env Rack::Environment
+    # @return Routing::BaseController
     def resolve(env)
       path, method = [env['REQUEST_PATH'], env['REQUEST_METHOD']]
 
