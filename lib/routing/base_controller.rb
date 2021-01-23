@@ -10,14 +10,14 @@ module Routing
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
-      @response = Response.new
     end
     
     # @return Routing::BaseController
     def call
-      content = send(action)
-      content = view if !content.instance_of? Response.template_engine
-      resolve(StatusCode::OK, content)
+      response = send(action)
+      response = view if !response.instance_of? Response
+      content, headers = response.resolve(binding)
+      resolve(StatusCode::OK, content, headers)
     end
     
     # @return Routing::BaseController
@@ -35,9 +35,12 @@ module Routing
     # @param name string
     # @return Erb
     def view(name = "#{self.name}/#{self.action}")
-      @response.layout.render do
-        @response.view(name).result(binding)
-      end
+      Response.new(:view, name)
+    end
+
+    # @param data Hash
+    def json(data = {})
+      Response.new(:json, data)
     end
 
     # @param key string
@@ -47,7 +50,6 @@ module Routing
     end
   
     private
-    attr_reader :response
 
     # @param status Routing::StatusCode
     # @param content string|render
