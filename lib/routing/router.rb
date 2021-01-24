@@ -7,7 +7,7 @@ module Routing
       @routes = routes
     end
     
-    # @param env Rack::Environment
+    # @param env Hash
     # @return Routing::BaseController
     def resolve(env)
       path, method = [env['REQUEST_PATH'], env['REQUEST_METHOD']]
@@ -15,7 +15,7 @@ module Routing
       route = route_finder(path, method)
       return BaseController.new.not_found if route.nil?
       
-      controller_finder(route[:controller]).call
+      controller_finder(route[:controller]).call(env)
     rescue Exception => error
       puts error.message
       puts error.backtrace
@@ -24,7 +24,7 @@ module Routing
     
     
     private 
-    # @param path string
+    # @param path String
     # @return Routing::BaseController
     def controller_finder(path)
       controller_name, action_name = path.split('#')
@@ -32,8 +32,8 @@ module Routing
       klass.new(name: controller_name, action: action_name.to_sym)
     end
 
-    # @param path string
-    # @param method string
+    # @param path String
+    # @param method String
     # @return Hash|Nil
     def route_finder(path, method)
       @routes.detect { |route| route[:path] == path && route[:method] == method.downcase.to_sym}

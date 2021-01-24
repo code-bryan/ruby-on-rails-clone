@@ -5,18 +5,19 @@ module Routing
     attr_reader :name, :action
     attr_accessor :status, :headers, :content
     
-    # @param name string
-    # @param actuon symbol
+    # @param name String
+    # @param action Symbol
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
     end
     
+    # @param env Hash
     # @return Routing::BaseController
-    def call
-      response = send(action)
+    def call(env)
+      response = send(action, Request.new(env))
       response = view if !response.instance_of? Response
-      
+
       content, headers = response.resolve(binding)
       resolve(StatusCode::OK, content, headers)
     end
@@ -33,7 +34,7 @@ module Routing
 
     protected
 
-    # @param name string
+    # @param name String
     # @return Erb
     def view(name = "#{self.name}.#{self.action}")
       Response.new(:view, name)
@@ -44,8 +45,8 @@ module Routing
       Response.new(:json, data)
     end
 
-    # @param key string
-    # @return string
+    # @param key String
+    # @return String
     def environment(key)
       ENV[key]
     end
@@ -54,7 +55,7 @@ module Routing
 
     # @param status Routing::StatusCode
     # @param content string|render
-    # @param headers hash
+    # @param headers Hash
     # @return Routing::BaseController
     def resolve(status = 200, content = "", headers = {"Content-Type" => "text/html"})
       self.status = status

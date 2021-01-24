@@ -1,10 +1,14 @@
 class MainController < Routing::BaseController
-  def index
+  # @param Http::Request
+  # @return Http::Response
+  def index(request)
     @test = environment("APP_NAME")
     @arr = %w(one two three)
   end
 
-  def create
-    json({ message: "hola" })
+  # @param Http::Request
+  # @return Http::Response
+  def create(request)
+    json(request.params)
   end
 end
