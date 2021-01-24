@@ -1,6 +1,7 @@
 route = Framework.route
 
 route.get("/", 'main#index')
+route.get("/hi", 'main#create')
 route.post("/hi", 'main#create')
 route.put("/hi", 'main#create')
 route.delete("/hi", 'main#create')

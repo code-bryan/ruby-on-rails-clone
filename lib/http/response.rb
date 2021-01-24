@@ -1,4 +1,4 @@
-require 'json'
+require 'json/ext'
 module Http
   class LayoutRenderer
   end

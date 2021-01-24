@@ -16,6 +16,7 @@ module Routing
     def call
       response = send(action)
       response = view if !response.instance_of? Response
+      
       content, headers = response.resolve(binding)
       resolve(StatusCode::OK, content, headers)
     end

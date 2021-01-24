@@ -12,9 +12,13 @@ Config
  - Database
 Database
  - Migrations
- - Seedsers
+ - Seeders
 Routes
  - Web
+.env.example
+app.rb
+config.ru
+Gemfile
 ```
 
 ### Module
