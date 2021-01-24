@@ -1,6 +1,6 @@
 class PostsController < Routing::BaseController
   def index
     @posts = Post.all
-    view("test")
+    view("view.test")
   end
 end

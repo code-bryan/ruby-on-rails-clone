@@ -20,8 +20,9 @@ module Http
     
     # @param name string
     # @return [Erb, Hash]
-    def view(name = "#{self.name}/#{self.action}", bind)
+    def view(name = "#{self.name}.#{self.action}", bind)
       content = layout.render do
+        name = name.split('.').join('/')
         view = File.read(File.join(App.root, 'app', 'views', "#{name}.html.erb"))
         ERB.new(view).result(bind)
       end

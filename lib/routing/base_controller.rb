@@ -35,7 +35,7 @@ module Routing
 
     # @param name string
     # @return Erb
-    def view(name = "#{self.name}/#{self.action}")
+    def view(name = "#{self.name}.#{self.action}")
       Response.new(:view, name)
     end
 
