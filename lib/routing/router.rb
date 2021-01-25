@@ -18,9 +18,10 @@ module Routing
       return BaseController.new.not_found if route.nil?
 
       controller = route[:controller]
-      return controller.call if controller.is_a? Proc
+      request = Request.new(env)
+      return call_proc(controller, request, params) if controller.is_a? Proc
 
-      controller_finder(controller).call(Request.new(env), params)
+      controller_finder(controller).call(request, params)
     rescue Exception => error
       puts error.message
       puts error.backtrace
@@ -29,6 +30,12 @@ module Routing
     
     
     private 
+
+    def call_proc(controller, request, params)
+      return controller.call(request, *params.values) if !params.nil?
+      controller.call(request)  
+    end
+
     # @param path String
     # @return Routing::BaseController
     def controller_finder(path)

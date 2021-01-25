@@ -12,8 +12,8 @@ route.get("/posts", "posts#index")
 route.get("/posts/:id", "posts#show")
 
 # test
-route.get("/test", ->() do
-  @test = "Hola"
+route.get("/test/:id", ->(request, id) do
+  @test = "Hola #{id}"
   @arr = %w(one two three)
   Http::Response.view("main.index", binding)
 end)
