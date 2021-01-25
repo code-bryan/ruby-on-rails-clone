@@ -15,6 +15,7 @@ module Routing
     # @param route_params Hash
     # @return Routing::BaseController
     def call(request, route_params)
+      puts route_params
       response = route_params.nil? ? send(action, request) : send(action, request, *route_params.values)
       response = view if !response.instance_of? Response
 

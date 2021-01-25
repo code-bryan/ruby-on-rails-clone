@@ -6,4 +6,7 @@ route.get("/hi", 'main#create')
 route.post("/hi", 'main#create')
 route.put("/hi", 'main#create')
 route.delete("/hi", 'main#create')
+
+# post routes
 route.get("/posts", "posts#index")
+route.get("/posts/:id", "posts#show")

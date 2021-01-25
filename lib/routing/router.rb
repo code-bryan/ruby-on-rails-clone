@@ -42,6 +42,7 @@ module Routing
       route = @routes.detect do |route|
         route_path = route[:path]
         route_path, params = detect_request_params(path, route) if !route[:params].nil?
+        params = nil if route[:params].nil?
         route_path == path && route[:method] == method.downcase.to_sym 
       end
       
