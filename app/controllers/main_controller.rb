@@ -1,13 +1,22 @@
 class MainController < Routing::BaseController
   # @param Http::Request
   # @return Http::Response
-  def index(request, name, hola)
-    puts name
-    puts hola
+  def index(request)
     @test = environment("APP_NAME")
     @arr = %w(one two three)
     view("main.index")
   end
+
+  # @param Http::Request
+  # @param name String
+  # @param hola String
+  # @return Http::Response
+  def hola(request, name, hola, prueba)
+    @test = environment("APP_NAME")
+    @arr = [name, hola, prueba]
+    view("main.index")
+  end
+
 
   # @param Http::Request
   # @return Http::Response
