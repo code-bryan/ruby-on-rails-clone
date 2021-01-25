@@ -23,7 +23,7 @@ module Http
     def view(name = "#{self.name}.#{self.action}", bind)
       content = layout.render do
         name = name.split('.').join('/')
-        view = File.read(File.join(App.root, 'app', 'views', "#{name}.html.erb"))
+        view = File.read(File.join(App.root, 'resources', 'views', "#{name}.html.erb"))
         ERB.new(view).result(bind)
       end
       [content, {"Content-Type" => "text/html"}]
@@ -37,7 +37,7 @@ module Http
     # @param layout string
     # @return LayoutRenderer
     def layout(layout = "layout/application")
-      layout = File.read(File.join(App.root, 'app', 'views', "#{layout}.html.erb"))
+      layout = File.read(File.join(App.root, 'resources', 'views', "#{layout}.html.erb"))
       render = ERB.new(layout).def_method(LayoutRenderer, 'render')
       LayoutRenderer.new
     end
