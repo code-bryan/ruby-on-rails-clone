@@ -1,5 +1,7 @@
 module Routing
   class Router
+    include Http
+
     attr_reader :routes
     
     # @param routes String
@@ -12,10 +14,10 @@ module Routing
     def resolve(env)
       path, method = [env['REQUEST_PATH'], env['REQUEST_METHOD']]
 
-      route = route_finder(path, method)
+      route, params = route_finder(path, method)
       return BaseController.new.not_found if route.nil?
-      
-      controller_finder(route[:controller]).call(Http::Request.new(env))
+
+      controller_finder(route[:controller]).call(Request.new(env), params)
     rescue Exception => error
       puts error.message
       puts error.backtrace
@@ -34,9 +36,36 @@ module Routing
 
     # @param path String
     # @param method String
-    # @return Hash|Nil
+    # @return [Hash|Nil, Hash|Nil]
     def route_finder(path, method)
-      @routes.detect { |route| route[:path] == path && route[:method] == method.downcase.to_sym}
+      params = nil
+      route = @routes.detect do |route|
+        route_path = route[:path]
+        route_path, params = detect_request_params(path, route) if !route[:params].nil?
+        route_path == path && route[:method] == method.downcase.to_sym 
+      end
+      
+      [route, params]
+    end
+
+    # @param path String
+    # @param method String
+    # @return [Hash|Nil, Hash|Nil]
+    def detect_request_params(path, route)
+      path_params = path.split('/').select { |pa| !pa.empty? }
+      route_params = route[:path].split('/').select { |pa| !pa.empty? }
+
+      params = Hash.new
+      route_params.map.with_index { |key, index|
+        key_fixed = key.split(":").last.to_sym
+        params[key_fixed] = path_params[index] if key.match(":")
+      }
+
+
+      new_path = route[:path].dup
+      params.keys.map { |key| new_path.sub!(":#{key}", params[key].to_s) }
+      
+      [new_path, params]
     end
   end
 end

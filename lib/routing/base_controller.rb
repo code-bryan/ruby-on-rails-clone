@@ -2,20 +2,20 @@ module Routing
   class BaseController
     include Http
 
-    attr_reader :name, :action
     attr_accessor :status, :headers, :content
     
-    # @param name String
-    # @param action Symbol
+    # @param name String|Nil
+    # @param action Symbol|Nil
     def initialize(name: nil, action: nil)
       @name = name
       @action = action
     end
     
-    # @param env Http::Request
+    # @param request Http::Request
+    # @param *route_params Hash
     # @return Routing::BaseController
-    def call(request)
-      response = send(action, request)
+    def call(request, route_params)
+      response = route_params.nil? ? send(action, request) : send(action, request, *route_params)
       response = view if !response.instance_of? Response
 
       content, headers = response.resolve(binding)
@@ -52,6 +52,7 @@ module Routing
     end
   
     private
+    attr_reader :name, :action
 
     # @param status Routing::StatusCode
     # @param content string|render

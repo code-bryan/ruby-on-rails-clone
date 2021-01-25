@@ -48,7 +48,12 @@ module Routing
     # @param controller String
     # @return Nil
     def route_generator(route, method, controller)
-      @list.push({path: route, method: method, controller: controller})
+      route_params = detect_request_params(route) if !route.match(":").nil?
+      @list.push({path: route, method: method, controller: controller, params: route_params})
+    end
+
+    def detect_request_params(route) 
+      route.split("/").select { |value| value.match(':').nil? }
     end
   end
 end
