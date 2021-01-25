@@ -14,14 +14,14 @@ module Routing
     def resolve(env)
       path, method = [env['REQUEST_PATH'], env['REQUEST_METHOD']]
 
-      route, params = route_finder(path, method)
+      route = route_finder(path, method)
       return BaseController.new.not_found if route.nil?
 
       controller = route[:controller]
       request = Request.new(env)
-      return call_proc(controller, request, params) if controller.is_a? Proc
+      return call_proc(controller, request, route[:params]) if controller.is_a? Proc
 
-      controller_finder(controller).call(request, params)
+      controller_finder(controller).call(request, route[:params])
     rescue Exception => error
       puts error.message
       puts error.backtrace
@@ -48,15 +48,11 @@ module Routing
     # @param method String
     # @return [Hash|Nil, Hash|Nil]
     def route_finder(path, method)
-      params = nil
-      route = @routes.detect do |route|
+      @routes.detect do |route|
         route_path = route[:path]
-        route_path, params = detect_request_params(path, route) if !route[:params].nil?
-        params = nil if route[:params].nil?
+        route_path, route[:params] = detect_request_params(path, route) if !route[:params].nil?
         route_path == path && route[:method] == method.downcase.to_sym 
       end
-      
-      [route, params]
     end
 
     # @param path String
@@ -66,17 +62,31 @@ module Routing
       path_params = path.split('/').select { |pa| !pa.empty? }
       route_params = route[:path].split('/').select { |pa| !pa.empty? }
 
+      params = map_route_params(route_params, path_params)
+      new_path = transform_path(route[:path], params)
+      
+      [new_path, params]
+    end
+
+    # @param route_params Array
+    # @param path_params Array
+    # @return Hash
+    def map_route_params(route_params, path_params)
       params = Hash.new
       route_params.map.with_index { |key, index|
         key_fixed = key.split(":").last.to_sym
         params[key_fixed] = path_params[index] if key.match(":")
       }
+      params
+    end
 
-
-      new_path = route[:path].dup
+    # @param path String
+    # @param params Hash
+    # @return String
+    def transform_path(path, params)
+      new_path = path.dup
       params.keys.map { |key| new_path.sub!(":#{key}", params[key].to_s) }
-      
-      [new_path, params]
+      new_path
     end
   end
 end
