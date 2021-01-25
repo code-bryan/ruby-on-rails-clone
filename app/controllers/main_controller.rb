@@ -4,6 +4,7 @@ class MainController < Routing::BaseController
   def index(request)
     @test = environment("APP_NAME")
     @arr = %w(one two three)
+    view("main.index")
   end
 
   # @param Http::Request

@@ -12,10 +12,10 @@ module Routing
       @action = action
     end
     
-    # @param env Hash
+    # @param env Http::Request
     # @return Routing::BaseController
-    def call(env)
-      response = send(action, Request.new(env))
+    def call(request)
+      response = send(action, request)
       response = view if !response.instance_of? Response
 
       content, headers = response.resolve(binding)

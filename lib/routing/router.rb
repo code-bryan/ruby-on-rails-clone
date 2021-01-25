@@ -15,7 +15,7 @@ module Routing
       route = route_finder(path, method)
       return BaseController.new.not_found if route.nil?
       
-      controller_finder(route[:controller]).call(env)
+      controller_finder(route[:controller]).call(Http::Request.new(env))
     rescue Exception => error
       puts error.message
       puts error.backtrace
