@@ -1,8 +1,6 @@
 module Routing
   class BaseController
     include Http
-
-    attr_accessor :status, :headers, :content
     
     # @param name String|Nil
     # @param action Symbol|Nil
@@ -15,22 +13,19 @@ module Routing
     # @param route_params Hash
     # @return Routing::BaseController
     def call(request, route_params)
-      puts route_params
       response = route_params.nil? ? send(action, request) : send(action, request, *route_params.values)
       response = view if !response.instance_of? Response
-
-      content, headers = response.resolve(binding)
-      resolve(StatusCode::OK, content, headers)
+      response
     end
     
     # @return Routing::BaseController
     def not_found
-      resolve(StatusCode::NOT_FOUND, "Not Found", {})
+      Response.error.not_found
     end
     
     # @return Routing::BaseController
     def internal_error
-      resolve(StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error", {})
+      Response.error.internal_error
     end
 
     protected
@@ -38,12 +33,12 @@ module Routing
     # @param name String
     # @return Erb
     def view(name = "#{self.name}.#{self.action}")
-      Response.new(:view, name)
+      Response::view(name, binding)
     end
 
     # @param data Hash
     def json(data = {})
-      Response.new(:json, data)
+      Response::json(data)
     end
 
     # @param key String
@@ -54,16 +49,5 @@ module Routing
   
     private
     attr_reader :name, :action
-
-    # @param status Routing::StatusCode
-    # @param content string|render
-    # @param headers Hash
-    # @return Routing::BaseController
-    def resolve(status = 200, content = "", headers = {"Content-Type" => "text/html"})
-      self.status = status
-      self.headers = headers
-      self.content = [content]
-      self
-    end
   end
 end

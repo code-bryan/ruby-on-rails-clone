@@ -17,7 +17,10 @@ module Routing
       route, params = route_finder(path, method)
       return BaseController.new.not_found if route.nil?
 
-      controller_finder(route[:controller]).call(Request.new(env), params)
+      controller = route[:controller]
+      return controller.call if controller.is_a? Proc
+
+      controller_finder(controller).call(Request.new(env), params)
     rescue Exception => error
       puts error.message
       puts error.backtrace

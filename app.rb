@@ -1,6 +1,5 @@
 require 'yaml'
 require "./lib/boot"
-
 class App
   include Routing
   

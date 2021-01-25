@@ -10,3 +10,10 @@ route.delete("/hi", 'main#create')
 # post routes
 route.get("/posts", "posts#index")
 route.get("/posts/:id", "posts#show")
+
+# test
+route.get("/test", ->() do
+  @test = "Hola"
+  @arr = %w(one two three)
+  Http::Response.view("main.index", binding)
+end)
