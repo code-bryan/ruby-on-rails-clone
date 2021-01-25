@@ -20,12 +20,12 @@ module Routing
     
     # @return Routing::BaseController
     def not_found
-      Response.error.not_found
+      Response.new.not_found
     end
     
     # @return Routing::BaseController
     def internal_error
-      Response.error.internal_error
+      Response.new.internal_error
     end
 
     protected
