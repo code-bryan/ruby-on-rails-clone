@@ -1,6 +1,15 @@
 require 'json/ext'
 module Http
+  module BaseHelper
+    def assets(name)
+      return "/javascript/#{name}" if !name.match('js').nil?
+      return "/assets/css/#{name}" if !name.match('css').nil?
+      "/assets/#{name}"
+    end
+  end
+
   class LayoutRenderer
+    include BaseHelper
   end
 
   class Response
@@ -19,7 +28,8 @@ module Http
     # @return LayoutRenderer
     def layout(layout = "layout/application")
       layout = File.read(File.join(App.root, 'resources', 'views', "#{layout}.html.erb"))
-      render = ERB.new(layout).def_method(LayoutRenderer, 'render')
+      render = ERB.new(layout)
+      render.def_method(LayoutRenderer, 'render')
       LayoutRenderer.new
     end
 
