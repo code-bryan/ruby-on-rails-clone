@@ -1,23 +1,5 @@
 require 'json/ext'
 module Http
-  module BaseHelper
-    def assets(name)
-      return "/javascript/#{name}" if !name.match('js').nil?
-      return "/assets/css/#{name}" if !name.match('css').nil?
-      "/assets/#{name}"
-    end
-
-    def component(name)
-      name = name.split('.').join('/')
-      view = File.read(File.join(App.root, 'resources', 'views', "#{name}.html.erb"))
-      ERB.new(view).result(binding)
-    end
-  end
-
-  class LayoutRenderer
-    include BaseHelper
-  end
-
   class Response
     attr_accessor :status, :headers, :content
 
@@ -33,10 +15,7 @@ module Http
     # @param layout string
     # @return LayoutRenderer
     def layout(layout = "layout/application")
-      layout = File.read(File.join(App.root, 'resources', 'views', "#{layout}.html.erb"))
-      render = ERB.new(layout)
-      render.def_method(LayoutRenderer, 'render')
-      LayoutRenderer.new
+      Template::Renderer.new.layout(layout)
     end
 
     # @return Http::Response
@@ -102,9 +81,7 @@ module Http
     # @return String
     def render_view(name, bind)
       layout.render do
-        name = name.split('.').join('/')
-        view = File.read(File.join(App.root, 'resources', 'views', "#{name}.html.erb"))
-        ERB.new(view).result(bind)
+        Template::Renderer.new.partial(name, bind)
       end
     end
   end

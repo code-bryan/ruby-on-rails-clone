@@ -1,6 +1,9 @@
+require_relative '../template/layout_renderer'
 module Routing
+
   class BaseController
     include Http
+    include Template::TemplateMethods
     
     # @param name String|Nil
     # @param action Symbol|Nil
