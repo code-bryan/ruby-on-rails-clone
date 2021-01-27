@@ -6,6 +6,12 @@ module Http
       return "/assets/css/#{name}" if !name.match('css').nil?
       "/assets/#{name}"
     end
+
+    def component(name)
+      name = name.split('.').join('/')
+      view = File.read(File.join(App.root, 'resources', 'views', "#{name}.html.erb"))
+      ERB.new(view).result(binding)
+    end
   end
 
   class LayoutRenderer
