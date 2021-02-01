@@ -16,6 +16,7 @@ module Routing
     # @param route_params Hash
     # @return Routing::BaseController
     def call(request, route_params)
+      Template::Context.generate(binding)
       response = route_params.nil? ? send(action, request) : send(action, request, *route_params.values)
       response = view if !response.instance_of? Response
       response
@@ -36,18 +37,12 @@ module Routing
     # @param name String
     # @return Erb
     def view(name = "#{self.name}.#{self.action}")
-      Response::view(name, binding)
+      Response::view(name)
     end
 
     # @param data Hash
     def json(data = {})
       Response::json(data)
-    end
-
-    # @param key String
-    # @return String
-    def environment(key)
-      ENV[key]
     end
   
     private

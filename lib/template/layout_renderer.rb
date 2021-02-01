@@ -3,6 +3,12 @@ module Template
     def partial(name)
       Template::Renderer.new.partial(name, binding)
     end
+
+    # @param key String
+    # @return String
+    def env(key)
+      ENV[key]
+    end
   end
 
   class LayoutRenderer

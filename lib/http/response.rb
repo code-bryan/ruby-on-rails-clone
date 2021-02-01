@@ -5,11 +5,10 @@ module Http
 
     # @param type Symbol
     # @param content Hash|String
-    # @param bind Binding | Nil
     # @return Http::Response
-    def render(type, content, bind)
+    def render(type, content)
       return json(content) if type == :json
-      view(content, bind)
+      view(content)
     end
     
     # @param layout string
@@ -31,10 +30,9 @@ module Http
     # static methods
 
     # @param name String
-    # @param bind Binding
     # @return Http::Response
-    def self.view(name = "#{self.name}.#{self.action}", bind)
-      Response.new.render(:view, name, bind)
+    def self.view(name = "#{self.name}.#{self.action}")
+      Response.new.render(:view, name)
     end
 
     # @param json Hash
@@ -67,8 +65,8 @@ module Http
 
     # @param name string
     # @return Http::Response
-    def view(name = "#{self.name}.#{self.action}", bind)
-      resolve_with_okay_status(render_view(name, bind), {"Content-Type" => "text/html"})
+    def view(name = "#{self.name}.#{self.action}")
+      resolve_with_okay_status(render_view(name), {"Content-Type" => "text/html"})
     end
 
     # @param json [Hash, Hash]
@@ -79,9 +77,9 @@ module Http
 
     # params name String
     # @return String
-    def render_view(name, bind)
+    def render_view(name)
       layout.render do
-        Template::Renderer.new.partial(name, bind)
+        Template::Renderer.new.partial(name)
       end
     end
   end
